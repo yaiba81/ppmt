@@ -2,11 +2,14 @@ package com.ppmt.domain;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotBlank;
@@ -43,6 +46,24 @@ public class Project {
 	@JsonFormat(pattern="yyyy-mm-dd")
 	private Date end_date;
 	
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")	
+	private Backlog backlog;
+	
+	
+	
+	/*
+	 *  Constructor
+	 */	
+	public Project() {}
+	
+	public Backlog getBacklog() {
+		return backlog;
+	}
+
+	public void setBacklog(Backlog backlog) {
+		this.backlog = backlog;
+	}
+
 	@PrePersist
 	protected void onCreate() {
 		this.created_At = new Date();
@@ -53,12 +74,7 @@ public class Project {
 		this.updated_At = new Date();
 	}
 	
-	/*
-	 *  Constructor
-	 */	
-	public Project() {}
-
-	public Long getId() {
+		public Long getId() {
 		return id;
 	}
 
